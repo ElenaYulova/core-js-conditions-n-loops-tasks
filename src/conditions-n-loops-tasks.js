@@ -148,8 +148,55 @@ function convertToRomanNumerals(num) {
  *  '10,5'    => 'one zero point five'
  *  '1950.2'  => 'one nine five zero point two'
  */
-function convertNumberToString(/* numberStr */) {
-  throw new Error('Not implemented');
+function convertNumberToString(numberStr) {
+  let str = '';
+  const convertOneNumToStr = (number) => {
+    switch (number) {
+      case '1':
+        return 'one';
+
+      case '2':
+        return 'two';
+
+      case '3':
+        return 'three';
+
+      case '4':
+        return 'four';
+
+      case '5':
+        return 'five';
+
+      case '6':
+        return 'six';
+
+      case '7':
+        return 'seven';
+
+      case '8':
+        return 'eight';
+
+      case '9':
+        return 'nine';
+
+      case '.':
+      case ',':
+        return 'point';
+
+      case '-':
+        return 'minus';
+
+      default:
+        return 'zero';
+    }
+  };
+  const convertFullNum = (num, i = 0) => {
+    str += convertOneNumToStr(num[i]);
+    if (i + 1 === num.length) return str;
+    str += ' ';
+    return convertFullNum(num, i + 1);
+  };
+  return convertFullNum(numberStr);
 }
 
 /**
@@ -164,8 +211,12 @@ function convertNumberToString(/* numberStr */) {
  *  '0123210'   => true
  *  'qweqwe'    => false
  */
-function isPalindrome(/* str */) {
-  throw new Error('Not implemented');
+function isPalindrome(str) {
+  let backStr = '';
+  for (let i = str.length - 1; i >= 0; i -= 1) {
+    backStr += str[i];
+  }
+  return str === backStr;
 }
 
 /**
