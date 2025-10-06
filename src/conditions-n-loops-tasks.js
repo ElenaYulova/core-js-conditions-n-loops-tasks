@@ -361,8 +361,22 @@ function getSpiralMatrix(size) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const newMatrix = matrix;
+  const centerPoint = Math.floor(matrix.length / 2);
+  const lastPoint = matrix.length - 1;
+
+  for (let i = 0; i < centerPoint; i += 1) {
+    for (let j = i; j < lastPoint - i; j += 1) {
+      const k = matrix[i][j];
+
+      newMatrix[i][j] = matrix[lastPoint - j][i];
+      newMatrix[lastPoint - j][i] = matrix[lastPoint - i][lastPoint - j];
+      newMatrix[lastPoint - i][lastPoint - j] = matrix[j][lastPoint - i];
+      newMatrix[j][lastPoint - i] = k;
+    }
+  }
+  return newMatrix;
 }
 
 /**
@@ -379,8 +393,48 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+
+const swap = (arr, left, right) => {
+  const newArr = arr;
+  const temp = arr[left];
+  newArr[left] = arr[right];
+  newArr[right] = temp;
+};
+
+const partition = (items, left, right) => {
+  const basis = items[Math.floor((right + left) / 2)];
+  let leftNum = left;
+  let rightNum = right;
+  while (leftNum <= rightNum) {
+    while (items[leftNum] < basis) {
+      leftNum += 1;
+    }
+    while (items[rightNum] > basis) {
+      rightNum -= 1;
+    }
+    if (leftNum <= rightNum) {
+      swap(items, leftNum, rightNum);
+      leftNum += 1;
+      rightNum -= 1;
+    }
+  }
+  return leftNum;
+};
+
+function sortByAsc(arr, left, right) {
+  const leftSide = !left ? 0 : left;
+  const rightSide = !right ? arr.length - 1 : right;
+  let index;
+  if (arr.length > 1) {
+    index = partition(arr, leftSide, rightSide);
+    if (leftSide < index - 1) {
+      sortByAsc(arr, leftSide, index - 1);
+    }
+    if (index < rightSide) {
+      sortByAsc(arr, index, rightSide);
+    }
+  }
+  return arr;
 }
 
 /**
